@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class Tran : MonoBehaviour
+public class TransparentsDetection: MonoBehaviour
 {
     [Range(0, 1)]
     [SerializeField] private float transparencyAmount = 0.8f;
@@ -31,7 +31,7 @@ public class Tran : MonoBehaviour
             }
         }
     }
-    //Ki?m tra xem ??i t??ng ?ã ?i ra kh?i khu v?c ??c bi?t 
+    //kiem tra xen nhan vat da roi khoi khu vuc chua
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.GetComponent<PlayerController>())
