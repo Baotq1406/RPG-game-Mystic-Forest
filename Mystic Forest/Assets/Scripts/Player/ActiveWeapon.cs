@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class ActiveWeapon : Singleton<ActiveWeapon>
 {
-    [SerializeField] private MonoBehaviour currrentActiveWeapon;
+    //[SerializeField] private MonoBehaviour currrentActiveWeapon;
+
+    public MonoBehaviour CurrentActveWeapon {  get; private set; } 
 
     private PlayerControls playerControls;
+    private float timeBetweenAttacks;
 
     private bool attackButtomDown, isAttacking = false;
 
@@ -27,12 +30,40 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
         //Su dung chuot trai de tan cong
         playerControls.Combat.Attack.started += _ => StartAttacking();
         //Dung tan cong 
-        playerControls.Combat.Attack.canceled += _ => StopAttacking(); 
+        playerControls.Combat.Attack.canceled += _ => StopAttacking();
+
+        AttackCooldown();
     }
 
     private void Update()
     {
         Attack();
+    }
+
+    public void NewWeapon(MonoBehaviour newWeapon)
+    {
+        CurrentActveWeapon = newWeapon;
+
+        AttackCooldown();
+        timeBetweenAttacks = (CurrentActveWeapon as IWeapon).GetWeaponInfo().weaponCooldown;
+    }
+
+    public void WeaponNull()
+    {
+        CurrentActveWeapon = null;
+    }
+
+    private void AttackCooldown()
+    {
+        isAttacking = true;
+        StopAllCoroutines();
+        StartCoroutine(TimeBetweenAttacksRoutine());
+    }
+
+    private IEnumerator TimeBetweenAttacksRoutine()
+    {
+        yield return new WaitForSeconds(timeBetweenAttacks);
+        isAttacking = false;
     }
 
     public void ToggleIsAttacking(bool value)
@@ -54,8 +85,8 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
     {
         if (attackButtomDown && !isAttacking)
         {
-            isAttacking = true;
-            (currrentActiveWeapon as IWeapon).Attack();           
+            AttackCooldown();
+            (CurrentActveWeapon as IWeapon).Attack();           
         }
     }
 }

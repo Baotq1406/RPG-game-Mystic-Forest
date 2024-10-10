@@ -6,23 +6,31 @@ public class Sword : MonoBehaviour, IWeapon
 {
     [SerializeField] private GameObject slashAnimPrefab;
     [SerializeField] private Transform slashAnimSpawnPoint;
-    [SerializeField] private Transform weaponCollider;
+    //[SerializeField] private Transform weaponCollider;
     [SerializeField] private float swordAttackCD = .5f;
+    [SerializeField] private WeaponInfo weaponInfo;
 
     // PlayerControls playerControls;
+    private Transform weaponCollider;
     private Animator myAnimator;
-    private PlayerController playerController;
-    private ActiveWeapon activeWeapon;
+    //private PlayerController playerController;
+    //private ActiveWeapon activeWeapon;
     //private bool attackButtonDown, isAttacking = false;
 
     private GameObject SlashAnim;
 
     private void Awake()
     {
-        playerController = GetComponentInParent<PlayerController>();
-        activeWeapon = GetComponentInParent<ActiveWeapon>();
+        //playerController = GetComponentInParent<PlayerController>();
+        //activeWeapon = GetComponentInParent<ActiveWeapon>();
         myAnimator = GetComponent<Animator>();
         //playerControls = new PlayerControls();
+    }
+
+    private void Start()
+    {
+        weaponCollider = PlayerController.Instance.GetWeaponCollider();
+        slashAnimSpawnPoint = GameObject.Find("SlashSpawnPoint").transform;
     }
 
     //private void OnEnable()
@@ -42,6 +50,7 @@ public class Sword : MonoBehaviour, IWeapon
         //Attack();
     }
 
+    public WeaponInfo GetWeaponInfo() { return weaponInfo; }
     //private void StartAttacking()
     //{
     //    attackButtonDown = true;
@@ -63,13 +72,13 @@ public class Sword : MonoBehaviour, IWeapon
             weaponCollider.gameObject.SetActive(true);
             SlashAnim = Instantiate(slashAnimPrefab, slashAnimSpawnPoint.position, Quaternion.identity);
             SlashAnim.transform.parent = this.transform.parent;
-            StartCoroutine(AttackCDRountine());
+            //StartCoroutine(AttackCDRountine());
     }
-    private IEnumerator AttackCDRountine()
-    {
-        yield return new WaitForSeconds(swordAttackCD);
-        ActiveWeapon.Instance.ToggleIsAttacking(false);
-    }
+    //private IEnumerator AttackCDRountine()
+    //{
+    //    yield return new WaitForSeconds(swordAttackCD);
+    //    ActiveWeapon.Instance.ToggleIsAttacking(false);
+    //}
 
     public void DoneAttackingAnimEvent()
     {
@@ -80,7 +89,7 @@ public class Sword : MonoBehaviour, IWeapon
     {
         SlashAnim.gameObject.transform.rotation = Quaternion.Euler(-180, 0, 0);
 
-        if (playerController.FacingLeft)
+        if (PlayerController.Instance.FacingLeft)
         {
             SlashAnim.GetComponent<SpriteRenderer>().flipX = true;
         }
@@ -90,7 +99,7 @@ public class Sword : MonoBehaviour, IWeapon
     {
         SlashAnim.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
-        if (playerController.FacingLeft)
+        if (PlayerController.Instance.FacingLeft)
         {
             SlashAnim.GetComponent<SpriteRenderer>().flipX = true;
         }
@@ -99,18 +108,18 @@ public class Sword : MonoBehaviour, IWeapon
     private void MouseFollowWithOffset()
     {
         Vector3 mousePos = Input.mousePosition;
-        Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(playerController.transform.position);
+        Vector3 playerScreenPoint = Camera.main.WorldToScreenPoint(PlayerController.Instance.transform.position);
 
         float angle = Mathf.Atan2(mousePos.y, mousePos.x) * Mathf.Rad2Deg;
 
         if(mousePos.x < playerScreenPoint.x)
         {
-            activeWeapon.transform.rotation = Quaternion.Euler(0, -180, angle);
+            ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0, -180, angle);
             weaponCollider.transform.rotation = Quaternion.Euler(0, -180, 0);
         }
         else
         {
-            activeWeapon.transform.rotation = Quaternion.Euler(0, 0, angle);
+            ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0, 0, angle);
             weaponCollider.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
     }
