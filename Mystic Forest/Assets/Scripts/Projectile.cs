@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Projectile : MonoBehaviour
 {
@@ -26,12 +28,18 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        //Checks if the object it collided with has an EnemyHealth (It's an enemy)
         EnemyHealth enemyHealth = other.gameObject.GetComponent<EnemyHealth>();
+
+        //Checks if the object has an Indestructible component, it's something like a wall that can't be destroyed.
         Indestructible indestructible = other.gameObject.GetComponent<Indestructible>();
 
         if (!other.isTrigger && (enemyHealth || indestructible))
         {
-            enemyHealth?.TakeDam(weaponInfo.weaponDam);
+            //function reduces the enemy's health by the weapon's damage
+            //enemyHealth?.TakeDam(weaponInfo.weaponDam);
+
+            //The visual effects are instantiated at the projectile’s current position.
             Instantiate(particleOnHitPrefabVFX, transform.position, transform.rotation);
             Destroy(gameObject);
         }
@@ -39,6 +47,9 @@ public class Projectile : MonoBehaviour
 
     private void DetectFireDistance()
     {
+        //If the projectile’s current position
+        //is farther from its starting position than the weapon's maximum range,
+        //the projectile is destroyed.
         if (Vector3.Distance(transform.position, startPosition) > weaponInfo.weaponRange)
         {
             Destroy(gameObject);

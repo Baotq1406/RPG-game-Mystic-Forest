@@ -6,7 +6,7 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
 {
     //[SerializeField] private MonoBehaviour currrentActiveWeapon;
 
-    public MonoBehaviour CurrentActveWeapon {  get; private set; } 
+    public MonoBehaviour CurrentActiveWeapon {  get; private set; } 
 
     private PlayerControls playerControls;
     private float timeBetweenAttacks;
@@ -42,15 +42,15 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
 
     public void NewWeapon(MonoBehaviour newWeapon)
     {
-        CurrentActveWeapon = newWeapon;
+        CurrentActiveWeapon = newWeapon;
 
         AttackCooldown();
-        timeBetweenAttacks = (CurrentActveWeapon as IWeapon).GetWeaponInfo().weaponCooldown;
+        timeBetweenAttacks = (CurrentActiveWeapon as IWeapon).GetWeaponInfo().weaponCooldown;
     }
 
     public void WeaponNull()
     {
-        CurrentActveWeapon = null;
+        CurrentActiveWeapon = null;
     }
 
     private void AttackCooldown()
@@ -83,10 +83,10 @@ public class ActiveWeapon : Singleton<ActiveWeapon>
 
     private void Attack()
     {
-        if (attackButtomDown && !isAttacking)
+        if (attackButtomDown && !isAttacking && CurrentActiveWeapon)
         {
             AttackCooldown();
-            (CurrentActveWeapon as IWeapon).Attack();           
+            (CurrentActiveWeapon as IWeapon).Attack();           
         }
     }
 }

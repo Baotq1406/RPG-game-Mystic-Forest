@@ -30,7 +30,10 @@ public class EnemyAI : MonoBehaviour
         while(state == State.Roaming)
         {
             Vector2 roamPosition = GetRoamingPosition();
+            //method is called to set the enemy's direction toward the new roaming position.
             enemyPathfinding.MoveTo(roamPosition);
+            //pauses the coroutine for roamChangeDirFloat seconds before the loop repeats,
+            //allowing the enemy to move toward the new position for a set duration before changing direction again.
             yield return new WaitForSeconds(roamChangeDirFloat);
         }
     }

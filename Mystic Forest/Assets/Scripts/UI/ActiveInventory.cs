@@ -49,12 +49,12 @@ public class ActiveInventory : MonoBehaviour
         //Debug.Log(transform.GetChild(activeSlotIndexNum).GetComponent<InventorySlot>().GetWeaponInfo().weaponPrefab.name);
 
         //Check if there's a currently active weapon and destroy it
-        if (ActiveWeapon.Instance.CurrentActveWeapon!= null) {
-            Destroy(ActiveWeapon.Instance.CurrentActveWeapon.gameObject);
+        if (ActiveWeapon.Instance.CurrentActiveWeapon!= null) {
+            Destroy(ActiveWeapon.Instance.CurrentActiveWeapon.gameObject);
         }
 
         //Check if the selected slot has a weapon
-        if (!transform.GetChild(activeSlotIndexNum).GetComponentInChildren<InventorySlot>())
+        if (transform.GetChild(activeSlotIndexNum).GetComponentInChildren<InventorySlot>().GetWeaponInfo() == null)
         {
             ActiveWeapon.Instance.WeaponNull();
             return;
