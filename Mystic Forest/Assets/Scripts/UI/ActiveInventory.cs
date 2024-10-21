@@ -53,19 +53,28 @@ public class ActiveInventory : MonoBehaviour
             Destroy(ActiveWeapon.Instance.CurrentActiveWeapon.gameObject);
         }
 
-        //Check if the selected slot has a weapon
-        if (transform.GetChild(activeSlotIndexNum).GetComponentInChildren<InventorySlot>().GetWeaponInfo() == null)
-        {
+        Transform childTransform = transform.GetChild(activeSlotIndexNum);
+        InventorySlot inventorySlot = childTransform.GetComponentInChildren<InventorySlot>();
+        WeaponInfo weaponInfo = inventorySlot.GetWeaponInfo();
+        GameObject weaponToSpawn = weaponInfo.weaponPrefab;
+
+        if (weaponInfo == null) {
             ActiveWeapon.Instance.WeaponNull();
             return;
         }
+        //Check if the selected slot has a weapon
+        //if (transform.GetChild(activeSlotIndexNum).GetComponentInChildren<InventorySlot>().GetWeaponInfo() == null)
+        //{
+        //    ActiveWeapon.Instance.WeaponNull();
+        //    return;
+        //}
 
         //Retrieve the weapon prefab
-        GameObject weaponToSpawm = transform.GetChild(activeSlotIndexNum).
-        GetComponentInChildren<InventorySlot>().GetWeaponInfo().weaponPrefab;
+        //GameObject weaponToSpawm = transform.GetChild(activeSlotIndexNum).
+        //GetComponentInChildren<InventorySlot>().GetWeaponInfo().weaponPrefab;
 
         //Spawn the new weapon
-        GameObject newWeapon = Instantiate(weaponToSpawm, ActiveWeapon.Instance.transform.position, Quaternion.identity);
+        GameObject newWeapon = Instantiate(weaponToSpawn, ActiveWeapon.Instance.transform.position, Quaternion.identity);
 
         //Setting the rotation of the ActiveWeapon object to a specific orientation using Euler angles
         ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0f, 0f, 0f);    

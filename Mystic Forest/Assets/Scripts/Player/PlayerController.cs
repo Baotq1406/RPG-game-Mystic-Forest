@@ -18,6 +18,7 @@ public class PlayerController : Singleton<PlayerController>
     private Rigidbody2D rb;
     private Animator MyAnimator;
     private SpriteRenderer MySpriteRender;
+    private KnockBack knockBack;
     private float startingMoveSpeed;
 
     private bool facingLeft = false;
@@ -28,10 +29,12 @@ public class PlayerController : Singleton<PlayerController>
         Instance = this;*/
     protected override void Awake() {
         base.Awake();
+
         playerControls = new PlayerControls();
         rb = GetComponent<Rigidbody2D>(); 
         MyAnimator = GetComponent<Animator>();
         MySpriteRender = GetComponent<SpriteRenderer>();
+        knockBack = GetComponent<KnockBack>();
     }
 
     private void Start()
@@ -69,6 +72,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Move()
     {
+        if (knockBack.GettingKnockedBack) { return; }   
         rb.MovePosition(rb.position +  movement * (moveSpeed * Time.fixedDeltaTime));
     }
 

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6792096693641032079}
   - component: {fileID: 517227192554783406}
   - component: {fileID: 7317656769714932366}
+  - component: {fileID: -1220070468714166871}
   m_Layer: 0
   m_Name: Crate 1
   m_TagString: Untagged
@@ -193,3 +194,16 @@ PolygonCollider2D:
       - {x: 0.67186844, y: 0.14065754}
       - {x: 0.3058021, y: 0.14062148}
   m_UseDelaunayMesh: 0
+--- !u!114 &-1220070468714166871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8387510915710642364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54bdacb11e564844f9f39e11bb2a5eae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goinCoinPrefab: {fileID: 5250468558637986119, guid: 538be753226d6534a9d28397a5f6a632, type: 3}
