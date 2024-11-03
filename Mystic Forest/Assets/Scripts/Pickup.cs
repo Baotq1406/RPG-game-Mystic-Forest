@@ -29,7 +29,7 @@ public class Pickup : MonoBehaviour
     }
     private void Start()
     {
-        
+        StartCoroutine(AnimCurveSpawnRoutine());
     }
 
     private void Update()
@@ -90,6 +90,7 @@ public class Pickup : MonoBehaviour
         switch (pickUpType)
         { 
             case PickUpType.GoldCoin:
+                EconomyManager.Instance.UpdateCurrentGold();
                 Debug.Log("GoldCoin");
             break;
 
