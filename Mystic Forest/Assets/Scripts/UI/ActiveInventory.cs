@@ -4,26 +4,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ActiveInventory : MonoBehaviour
+public class ActiveInventory : Singleton<ActiveInventory>
 {
     private int activeSlotIndexNum = 0;
 
     private PlayerControls playerControls;
 
-    private void Awake()
+    protected override void Awake()
     {
-          playerControls = new PlayerControls();
+        base.Awake();
+        playerControls = new PlayerControls();
     }
 
     private void Start()
     {
         playerControls.Inventory.Keyboard.performed += ctx => ToggleActiveSlot((int)ctx.ReadValue<float>());
-
-        ToggleActiveHighlight(0);
     }
     private void OnEnable()
     {
         playerControls.Enable();
+    }
+
+    public void EquipStartingWeapon()
+    {
+        ToggleActiveHighlight(0);
     }
 
     private void ToggleActiveSlot(int numValue)
@@ -74,13 +78,13 @@ public class ActiveInventory : MonoBehaviour
         //GetComponentInChildren<InventorySlot>().GetWeaponInfo().weaponPrefab;
 
         //Spawn the new weapon
-        GameObject newWeapon = Instantiate(weaponToSpawn, ActiveWeapon.Instance.transform.position, Quaternion.identity);
+        GameObject newWeapon = Instantiate(weaponToSpawn, ActiveWeapon.Instance.transform);
 
         //Setting the rotation of the ActiveWeapon object to a specific orientation using Euler angles
-        ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0f, 0f, 0f);    
+        //ActiveWeapon.Instance.transform.rotation = Quaternion.Euler(0f, 0f, 0f);    
 
         //Set the new weapon as a child of the ActiveWeapon object
-        newWeapon.transform.parent = ActiveWeapon.Instance.transform;
+        //newWeapon.transform.parent = ActiveWeapon.Instance.transform;
 
         //Update the active weapon reference
         ActiveWeapon.Instance.NewWeapon(newWeapon.GetComponent<MonoBehaviour>());
